@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Reader with Audio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <i class="fas fa-file-pdf"></i>
+                    PDF Reader with Audio
+                </h1>
+                <p class="subtitle">Modern web-based PDF reader with text-to-speech capabilities</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- File Upload Section -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-container">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <h3>Upload PDF File</h3>
+                        <p>Drag and drop your PDF file here or click to browse</p>
+                        <input type="file" id="pdfFile" accept=".pdf" hidden>
+                        <button class="upload-btn" onclick="document.getElementById('pdfFile').click()">
+                            <i class="fas fa-folder-open"></i>
+                            Choose File
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PDF Viewer Section -->
+            <section class="viewer-section" id="viewerSection" style="display: none;">
+                <!-- Control Panel -->
+                <div class="control-panel">
+                    <div class="control-group">
+                        <h3>File Operations</h3>
+                        <div class="button-group">
+                            <button class="btn btn-primary" onclick="extractText()">
+                                <i class="fas fa-file-text"></i>
+                                Extract Text
+                            </button>
+                            <button class="btn btn-secondary" onclick="saveText()">
+                                <i class="fas fa-download"></i>
+                                Save Text
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Audio Controls</h3>
+                        <div class="audio-controls">
+                            <button class="btn btn-audio" id="playBtn" onclick="startReading()">
+                                <i class="fas fa-play"></i>
+                                Play
+                            </button>
+                            <button class="btn btn-audio" id="stopBtn" onclick="stopReading()">
+                                <i class="fas fa-stop"></i>
+                                Stop
+                            </button>
+                            <button class="btn btn-audio" id="pauseBtn" onclick="pauseReading()">
+                                <i class="fas fa-pause"></i>
+                                Pause
+                            </button>
+                        </div>
+                        <div class="audio-settings">
+                            <div class="setting-group">
+                                <label for="speedControl">Speed:</label>
+                                <select id="speedControl" onchange="updateVoiceSettings()">
+                                    <option value="0.5">Slow</option>
+                                    <option value="1.0" selected>Normal</option>
+                                    <option value="1.5">Fast</option>
+                                    <option value="2.0">Very Fast</option>
+                                </select>
+                            </div>
+                            <div class="setting-group">
+                                <label for="volumeControl">Volume:</label>
+                                <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="0.8" onchange="updateVoiceSettings()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Navigation</h3>
+                        <div class="navigation-controls">
+                            <button class="btn btn-nav" onclick="previousPage()">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span class="page-info" id="pageInfo">Page 1 of 1</span>
+                            <button class="btn btn-nav" onclick="nextPage()">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <div class="zoom-controls">
+                            <button class="btn btn-zoom" onclick="zoomOut()">
+                                <i class="fas fa-search-minus"></i>
+                            </button>
+                            <button class="btn btn-zoom" onclick="resetZoom()">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="btn btn-zoom" onclick="zoomIn()">
+                                <i class="fas fa-search-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Tabs -->
+                <div class="content-tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="switchTab('viewer')">
+                            <i class="fas fa-eye"></i>
+                            PDF Viewer
+                        </button>
+                        <button class="tab-btn" onclick="switchTab('text')">
+                            <i class="fas fa-file-alt"></i>
+                            Text Viewer
+                        </button>
+                    </div>
+
+                    <!-- PDF Viewer Tab -->
+                    <div class="tab-content active" id="viewerTab">
+                        <div class="pdf-container">
+                            <div class="pdf-viewer" id="pdfViewer">
+                                <img id="pageImage" src="" alt="PDF Page" class="page-image">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Viewer Tab -->
+                    <div class="tab-content" id="textTab">
+                        <div class="text-container">
+                            <textarea id="textViewer" class="text-viewer" readonly placeholder="Extract text from PDF to view here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Status Bar -->
+        <footer class="status-bar">
+            <div class="status-content">
+                <span id="statusText">Ready - No PDF loaded</span>
+                <div class="reading-progress" id="readingProgress" style="display: none;">
+                    <span id="progressText">Reading...</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 

@@ -1,187 +1,217 @@
-# PDF Reader with Audio Application
+# PDF Reader with Audio - Web Application
 
-A modern, feature-rich PDF reader built with Python and Tkinter that includes **text-to-speech functionality**. This application provides a user-friendly interface for viewing PDFs, extracting text, and **reading PDFs aloud**.
+A modern, responsive web-based PDF reader built with **HTML, CSS, and JavaScript** that includes **text-to-speech functionality**. This application provides a beautiful, user-friendly interface for viewing PDFs, extracting text, and **reading PDFs aloud** in any modern web browser.
 
-## Features
+## 🌟 Features
 
-- **PDF Viewing**: Display PDF pages with zoom and scroll capabilities
-- **Text Extraction**: Extract text from PDF documents
-- **🎵 Audio Reading**: Read PDF text aloud with text-to-speech
-- **Audio Controls**: Play, pause, and stop audio reading
-- **Voice Settings**: Adjust reading speed and volume
-- **Navigation**: Easy page-by-page navigation
-- **Zoom Controls**: Zoom in/out and reset zoom level
-- **Text Viewer**: Separate tab for viewing extracted text
-- **Save Functionality**: Save extracted text to files
-- **Modern UI**: Clean, intuitive interface with proper styling
+- **📄 PDF Viewing**: Display PDF pages with zoom and scroll capabilities
+- **📝 Text Extraction**: Extract text from PDF documents
+- **🎵 Audio Reading**: Read PDF text aloud with browser text-to-speech
+- **🎛️ Audio Controls**: Play, pause, and stop audio reading
+- **⚙️ Voice Settings**: Adjust reading speed and volume
+- **🧭 Navigation**: Easy page-by-page navigation with keyboard shortcuts
+- **🔍 Zoom Controls**: Zoom in/out and reset zoom level
+- **📱 Responsive Design**: Works perfectly on desktop, tablet, and mobile
+- **💾 Save Functionality**: Save extracted text to files
+- **🎨 Modern UI**: Beautiful, intuitive interface with animations
 
-## Installation
+## 🚀 Quick Start
 
-1. **Clone or download the project files**
-
-2. **Install required dependencies**:
+1. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-   Or install manually:
+2. **Run the web application**:
    ```bash
-   pip install PyPDF2==3.0.1 PyMuPDF==1.23.8 Pillow==10.1.0 pyttsx3==2.90 playsound==1.3.0
+   python app.py
    ```
 
-## Usage
-
-1. **Run the application**:
-   ```bash
-   python index.py
+3. **Open your browser** and go to:
+   ```
+   http://localhost:8080
    ```
 
-2. **Open a PDF**:
-   - Click the "Open PDF" button
-   - Select a PDF file from your computer
-   - The PDF will load and display the first page
-
-3. **Navigate through pages**:
-   - Use the "◀" and "▶" buttons to move between pages
-   - The current page number is displayed in the navigation area
-
-4. **Zoom controls**:
-   - Click "Zoom +" to zoom in
-   - Click "Zoom -" to zoom out
-   - Click "Reset" to return to original size
-
-5. **Extract text**:
-   - Click "Extract Text" to extract all text from the PDF
-   - Switch to the "Text Viewer" tab to see the extracted text
-   - Use "Save Text" to save the extracted text to a file
-
-6. **🎵 Audio Reading**:
-   - After extracting text, click "🔊 Play" to start reading aloud
-   - Use "⏹ Stop" to stop reading
-   - Use "⏸ Pause" to pause/resume reading
-   - Adjust reading speed (50-250 words per minute)
-   - Adjust volume (0.1-1.0)
-   - Monitor reading progress in the progress bar
-
-## File Structure
+## 📁 File Structure
 
 ```
 PDFcordingChallenge/
-├── index.py          # Main application file with audio features
-├── requirements.txt  # Python dependencies including TTS
-└── README.md        # This file
+├── app.py                 # Flask web server
+├── templates/
+│   └── index.html        # Main HTML template
+├── static/
+│   ├── css/
+│   │   └── style.css     # Modern CSS styles
+│   └── js/
+│       └── app.js        # JavaScript functionality
+├── requirements.txt      # Python dependencies
+└── README.md            # This file
 ```
 
-## Requirements
+## 🎯 How to Use
 
-- Python 3.7 or higher
-- Tkinter (usually comes with Python)
-- PyMuPDF (fitz) for PDF processing
-- PyPDF2 for additional PDF functionality
-- Pillow for image processing
-- **pyttsx3 for text-to-speech functionality**
-- **playsound for audio playback**
+### **1. Upload PDF**
+- **Drag & Drop**: Simply drag your PDF file onto the upload area
+- **Click to Browse**: Click the upload area to select a file
+- **Supported**: All standard PDF files
 
-## Audio Features
+### **2. Navigate & View**
+- **Page Navigation**: Use ◀ ▶ buttons or arrow keys
+- **Zoom Controls**: Use + - buttons or keyboard shortcuts
+- **Keyboard Shortcuts**:
+  - `←` `→` - Previous/Next page
+  - `+` `-` - Zoom in/out
+  - `0` - Reset zoom
+  - `Space` - Pause/Resume reading
+  - `Escape` - Stop reading
 
-### Text-to-Speech Engine
-- Uses **pyttsx3** for cross-platform text-to-speech
-- Supports multiple voices (system-dependent)
-- Adjustable speech rate and volume
-- Sentence-by-sentence reading for better control
+### **3. Extract Text**
+- Click "Extract Text" to extract all text from the PDF
+- Switch to "Text Viewer" tab to see the extracted text
+- Use "Save Text" to download the text as a file
 
-### Audio Controls
-- **Play**: Start reading the extracted text aloud
-- **Stop**: Immediately stop audio reading
-- **Pause**: Pause and resume reading
-- **Speed Control**: Adjust reading speed from 50 to 250 WPM
-- **Volume Control**: Adjust audio volume from 0.1 to 1.0
+### **4. 🎵 Audio Reading**
+- After extracting text, click "🔊 Play" to start reading aloud
+- Use "⏹ Stop" to stop reading
+- Use "⏸ Pause" to pause/resume reading
+- Adjust reading speed (Slow to Very Fast)
+- Adjust volume (0-100%)
+- Monitor reading progress in real-time
 
-### Reading Progress
-- Real-time progress indicator
-- Shows current sentence being read
-- Displays total reading progress
+## 🛠️ Technical Stack
 
-## Troubleshooting
+### **Frontend**
+- **HTML5**: Semantic markup and modern structure
+- **CSS3**: Advanced styling with gradients, animations, and responsive design
+- **JavaScript (ES6+)**: Modern JavaScript with async/await
+- **Font Awesome**: Beautiful icons
+- **Google Fonts**: Inter font family for modern typography
 
-### Common Issues
+### **Backend**
+- **Flask**: Lightweight Python web framework
+- **PyMuPDF**: High-performance PDF processing
+- **Pillow**: Image processing for PDF rendering
 
-1. **Import Error for fitz**:
-   - Make sure PyMuPDF is installed: `pip install PyMuPDF`
+### **Audio Features**
+- **Web Speech API**: Native browser text-to-speech
+- **Cross-browser Support**: Works in Chrome, Firefox, Safari, Edge
+- **Real-time Controls**: Adjust speed and volume on the fly
 
-2. **TTS initialization error**:
-   - On macOS: TTS should work out of the box
-   - On Windows: May need to install additional speech engines
-   - On Linux: Install espeak: `sudo apt-get install espeak`
+## 🎨 Design Features
 
-3. **Tkinter not found**:
-   - On Ubuntu/Debian: `sudo apt-get install python3-tk`
-   - On macOS: Tkinter should be included with Python
-   - On Windows: Tkinter should be included with Python
+### **Modern UI/UX**
+- **Glassmorphism**: Beautiful frosted glass effects
+- **Gradient Backgrounds**: Eye-catching color schemes
+- **Smooth Animations**: Hover effects and transitions
+- **Responsive Grid**: Adapts to any screen size
+- **Dark/Light Elements**: Balanced contrast and readability
 
-4. **PDF won't load**:
-   - Ensure the PDF file is not corrupted
-   - Check if the file path contains special characters
-   - Make sure you have read permissions for the file
+### **Interactive Elements**
+- **Drag & Drop**: Intuitive file upload
+- **Real-time Feedback**: Loading states and progress indicators
+- **Toast Notifications**: Success, error, and warning messages
+- **Tabbed Interface**: Organized content sections
 
-5. **Audio not working**:
-   - Check system audio settings
+## 📱 Responsive Design
+
+The application is fully responsive and works perfectly on:
+- **Desktop**: Full-featured experience with all controls
+- **Tablet**: Optimized layout with touch-friendly buttons
+- **Mobile**: Streamlined interface for small screens
+
+## 🔧 Requirements
+
+- **Python 3.7+**
+- **Modern Web Browser** (Chrome, Firefox, Safari, Edge)
+- **Internet Connection** (for fonts and icons)
+
+### **Python Dependencies**
+- Flask==2.3.3
+- PyMuPDF==1.23.8
+- PyPDF2==3.0.1
+- Pillow==10.1.0
+
+## 🚀 Advanced Features
+
+### **Browser Text-to-Speech**
+- **Native Support**: Uses browser's built-in speech synthesis
+- **Multiple Voices**: System-dependent voice selection
+- **Speed Control**: Adjustable reading speed
+- **Volume Control**: Adjustable audio volume
+- **Progress Tracking**: Real-time reading progress
+
+### **PDF Processing**
+- **High Performance**: Fast PDF loading and rendering
+- **Zoom Support**: Dynamic zoom with image quality preservation
+- **Text Extraction**: Accurate text extraction from all PDF types
+- **File Management**: Automatic cleanup and resource management
+
+### **User Experience**
+- **Keyboard Shortcuts**: Full keyboard navigation
+- **Drag & Drop**: Intuitive file upload
+- **Progress Indicators**: Visual feedback for all operations
+- **Error Handling**: Graceful error messages and recovery
+
+## 🐛 Troubleshooting
+
+### **Common Issues**
+
+1. **PDF won't upload**:
+   - Ensure file is a valid PDF
+   - Check file size (max 16MB)
+   - Try refreshing the page
+
+2. **Audio not working**:
+   - Check browser permissions for audio
    - Ensure speakers/headphones are connected
-   - Try different voice settings
+   - Try a different browser (Chrome recommended)
 
-### Performance Tips
+3. **Page not loading**:
+   - Check if Flask server is running
+   - Verify port 8080 is available
+   - Check browser console for errors
 
-- Large PDF files may take longer to load
-- Zoom operations on large files may be slower
-- Text extraction from very large documents may take some time
-- Audio reading works best with clean, well-formatted text
+4. **Text extraction fails**:
+   - Ensure PDF contains extractable text
+   - Try a different PDF file
+   - Check server logs for errors
 
-## Features in Detail
+5. **Port 5000 conflict (macOS)**:
+   - The app now uses port 8080 to avoid conflicts with AirPlay Receiver
+   - If you need to use a different port, modify `app.py` line 184
 
-### PDF Viewer Tab
-- Displays PDF pages as images
-- Supports horizontal and vertical scrolling
-- Maintains aspect ratio during zoom operations
-- Smooth page transitions
+### **Browser Compatibility**
+- **Chrome**: Full support, recommended
+- **Firefox**: Full support
+- **Safari**: Full support
+- **Edge**: Full support
+- **Internet Explorer**: Not supported
 
-### Text Viewer Tab
-- Shows extracted text with proper formatting
-- Supports word wrap for better readability
-- Scrollable text area for long documents
-- Page separators for easy navigation
+## 🔮 Future Enhancements
 
-### Audio Controls Panel
-- Dedicated audio control buttons with icons
-- Real-time voice settings adjustment
-- Progress tracking during reading
-- Status updates for audio operations
+Potential features for future versions:
+- **Multiple Voice Selection**: Choose from available system voices
+- **Audio File Export**: Save audio as MP3/WAV files
+- **Bookmark Support**: Save and manage page bookmarks
+- **Search Functionality**: Search within PDF content
+- **Multiple Document Tabs**: Open multiple PDFs simultaneously
+- **Print Functionality**: Print PDF pages directly
+- **Annotation Tools**: Add notes and highlights
+- **OCR Support**: Extract text from scanned PDFs
+- **Cloud Storage**: Upload to Google Drive, Dropbox, etc.
 
-### File Operations
-- Open PDF files with file dialog
-- Extract text from entire document
-- Save extracted text to text files
-- Support for various file formats
+## 📄 License
 
-## Accessibility Features
+This project is open source and available under the MIT License.
 
-This PDF reader is designed with accessibility in mind:
-- **Screen Reader Compatible**: Works with system screen readers
-- **Keyboard Navigation**: All features accessible via keyboard
-- **High Contrast**: Clear visual indicators for audio controls
-- **Audio Feedback**: Text-to-speech for all extracted content
+## 🤝 Contributing
 
-## Contributing
+Contributions are welcome! Feel free to:
+- Report bugs and issues
+- Suggest new features
+- Submit pull requests
+- Improve documentation
 
-Feel free to enhance this PDF reader with additional features such as:
-- Multiple voice selection
-- Audio file export
-- Bookmark support
-- Search functionality
-- Multiple document tabs
-- Print functionality
-- Annotation tools
-- OCR for scanned PDFs
+---
 
-## License
-
-This project is open source and available under the MIT License. 
+**Enjoy reading your PDFs with audio! 🎵📚** 
