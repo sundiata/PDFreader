@@ -242,7 +242,7 @@ class PDFReader:
         # Remove extra whitespace and newlines
         text = ' '.join(text.split())
         
-        # Remove special characters that might interfere with speech
+        
         import re
         text = re.sub(r'[^\w\s\.\,\!\?\-]', '', text)
         
