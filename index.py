@@ -228,7 +228,7 @@ class PDFReader:
                     self.tts_engine.say(sentence + ".")
                     self.tts_engine.runAndWait()
                     
-                    # Update progress
+                    
                     progress = f"Reading... {i+1}/{len(sentences)}"
                     self.root.after(0, lambda p=progress: self.progress_var.set(p))
                     
