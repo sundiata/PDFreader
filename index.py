@@ -239,7 +239,6 @@ class PDFReader:
             
     def clean_text_for_speech(self, text):
         """Clean text for better speech synthesis"""
-        # Remove extra whitespace and newlines
         text = ' '.join(text.split())
         
         
