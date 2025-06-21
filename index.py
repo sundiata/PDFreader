@@ -214,10 +214,8 @@ class PDFReader:
     def read_text_thread(self):
         """Thread function for reading text"""
         try:
-            # Clean the text for better speech
             clean_text = self.clean_text_for_speech(self.current_text)
             
-            # Split text into sentences for better control
             sentences = clean_text.split('. ')
             
             for i, sentence in enumerate(sentences):
