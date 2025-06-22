@@ -166,7 +166,6 @@ class PDFReader:
         audio_progress_frame = ttk.Frame(main_frame)
         audio_progress_frame.pack(fill=tk.X, pady=(10, 0))
         
-        # Reading progress
         ttk.Label(audio_progress_frame, text="Reading Progress:", style='Info.TLabel').pack(side=tk.LEFT)
         self.progress_var = tk.StringVar(value="Ready")
         progress_label = ttk.Label(audio_progress_frame, textvariable=self.progress_var, style='Info.TLabel')
@@ -206,7 +205,6 @@ class PDFReader:
         self.progress_var.set("Reading...")
         self.status_var.set("Reading text aloud...")
         
-        # Start reading in a separate thread
         self.reading_thread = threading.Thread(target=self.read_text_thread)
         self.reading_thread.daemon = True
         self.reading_thread.start()
