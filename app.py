@@ -10,7 +10,7 @@ import json
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
-# Global variables to store current PDF data
+
 current_pdf_data = {
     'document': None,
     'filename': None,
@@ -45,16 +45,16 @@ def upload_pdf():
         temp_path = os.path.join(temp_dir, file.filename)
         file.save(temp_path)
         
-        # Open PDF with PyMuPDF
+       
         pdf_document = fitz.open(temp_path)
         
-        # Store PDF data
+   
         current_pdf_data['document'] = pdf_document
         current_pdf_data['filename'] = file.filename
         current_pdf_data['total_pages'] = len(pdf_document)
         current_pdf_data['current_page'] = 0
         
-        # Get first page image
+        
         page = pdf_document[0]
         pix = page.get_pixmap(matrix=fitz.Matrix(1.5, 1.5))
         img_data = pix.tobytes("png")
