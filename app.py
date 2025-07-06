@@ -40,7 +40,7 @@ def upload_pdf():
         if not file.filename.lower().endswith('.pdf'):
             return jsonify({'error': 'Please upload a PDF file'}), 400
         
-        # Save uploaded file temporarily
+        
         temp_dir = tempfile.mkdtemp()
         temp_path = os.path.join(temp_dir, file.filename)
         file.save(temp_path)
@@ -59,7 +59,7 @@ def upload_pdf():
         pix = page.get_pixmap(matrix=fitz.Matrix(1.5, 1.5))
         img_data = pix.tobytes("png")
         
-        # Convert to base64 for web display
+     
         img_base64 = base64.b64encode(img_data).decode()
         
         return jsonify({
@@ -85,7 +85,7 @@ def get_page(page_num):
         if page_num < 1 or page_num > current_pdf_data['total_pages']:
             return jsonify({'error': 'Invalid page number'}), 400
         
-        # Get page (convert to 0-based index)
+ 
         page = current_pdf_data['document'][page_num - 1]
         
         # Get zoom level from query parameter
