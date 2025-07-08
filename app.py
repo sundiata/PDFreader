@@ -185,3 +185,17 @@ if __name__ == '__main__':
     print("📱 Open your browser and go to: http://localhost:8080")
     print("🎵 Enjoy reading PDFs with audio!")
     app.run(debug=True, host='0.0.0.0', port=8080) 
+
+
+
+my =  [1,2,3,4,5,6,7,8,9,10]
+
+for i in my:
+    print(i)
+
+
+
+
+
+
+print(my)
