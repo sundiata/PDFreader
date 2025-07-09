@@ -6,9 +6,11 @@ import base64
 import io
 from PIL import Image
 import json
+import time
+import random
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  
 
 
 current_pdf_data = {
