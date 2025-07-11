@@ -58,6 +58,24 @@
                     </div>
 
                     <div class="control-group">
+                        <h3>AI Analysis</h3>
+                        <div class="button-group">
+                            <button class="btn btn-ai" onclick="summarizePDF()">
+                                <i class="fas fa-brain"></i>
+                                Summarize
+                            </button>
+                            <button class="btn btn-ai" onclick="generateQuestions()">
+                                <i class="fas fa-question-circle"></i>
+                                Generate Questions
+                            </button>
+                            <button class="btn btn-ai" onclick="exportQuestions()">
+                                <i class="fas fa-file-export"></i>
+                                Export Questions
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
                         <h3>Audio Controls</h3>
                         <div class="audio-controls">
                             <button class="btn btn-audio" id="playBtn" onclick="startReading()">
@@ -115,35 +133,91 @@
                     </div>
                 </div>
 
-                <!-- Content Tabs -->
-                <div class="content-tabs">
-                    <div class="tab-buttons">
-                        <button class="tab-btn active" onclick="switchTab('viewer')">
-                            <i class="fas fa-eye"></i>
-                            PDF Viewer
-                        </button>
-                        <button class="tab-btn" onclick="switchTab('text')">
-                            <i class="fas fa-file-alt"></i>
-                            Text Viewer
-                        </button>
-                    </div>
+                                    <!-- Content Tabs -->
+                    <div class="content-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" onclick="switchTab('viewer')">
+                                <i class="fas fa-eye"></i>
+                                PDF Viewer
+                            </button>
+                            <button class="tab-btn" onclick="switchTab('text')">
+                                <i class="fas fa-file-alt"></i>
+                                Text Viewer
+                            </button>
+                            <button class="tab-btn" onclick="switchTab('summary')">
+                                <i class="fas fa-brain"></i>
+                                Summary
+                            </button>
+                            <button class="tab-btn" onclick="switchTab('questions')">
+                                <i class="fas fa-question-circle"></i>
+                                Questions
+                            </button>
+                        </div>
 
-                    <!-- PDF Viewer Tab -->
-                    <div class="tab-content active" id="viewerTab">
-                        <div class="pdf-container">
-                            <div class="pdf-viewer" id="pdfViewer">
-                                <img id="pageImage" src="" alt="PDF Page" class="page-image">
+                        <!-- PDF Viewer Tab -->
+                        <div class="tab-content active" id="viewerTab">
+                            <div class="pdf-container">
+                                <div class="pdf-viewer" id="pdfViewer">
+                                    <img id="pageImage" src="" alt="PDF Page" class="page-image">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Text Viewer Tab -->
+                        <div class="tab-content" id="textTab">
+                            <div class="text-container">
+                                <textarea id="textViewer" class="text-viewer" readonly placeholder="Extract text from PDF to view here..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Summary Tab -->
+                        <div class="tab-content" id="summaryTab">
+                            <div class="summary-container">
+                                <div class="summary-section">
+                                    <h3>Document Summary</h3>
+                                    <div id="summaryContent" class="summary-content">
+                                        <p class="placeholder">Click "Summarize" to generate a summary of the PDF content.</p>
+                                    </div>
+                                </div>
+                                <div class="summary-section">
+                                    <h3>Key Points</h3>
+                                    <div id="keyPointsContent" class="key-points-content">
+                                        <p class="placeholder">Key points will appear here after summarization.</p>
+                                    </div>
+                                </div>
+                                <div class="summary-section">
+                                    <h3>Document Statistics</h3>
+                                    <div id="statsContent" class="stats-content">
+                                        <p class="placeholder">Document statistics will appear here after summarization.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Questions Tab -->
+                        <div class="tab-content" id="questionsTab">
+                            <div class="questions-container">
+                                <div class="questions-controls">
+                                    <div class="question-settings">
+                                        <label>Question Types:</label>
+                                        <div class="checkbox-group">
+                                            <label><input type="checkbox" id="mcQuestions" checked> Multiple Choice</label>
+                                            <label><input type="checkbox" id="theoryQuestions" checked> Theory</label>
+                                        </div>
+                                        <label>Number of Questions:</label>
+                                        <input type="number" id="questionCount" min="1" max="20" value="5">
+                                        <button class="btn btn-primary" onclick="generateQuestions()">
+                                            <i class="fas fa-magic"></i>
+                                            Generate Questions
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="questionsContent" class="questions-content">
+                                    <p class="placeholder">Click "Generate Questions" to create exam questions from the PDF content.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Text Viewer Tab -->
-                    <div class="tab-content" id="textTab">
-                        <div class="text-container">
-                            <textarea id="textViewer" class="text-viewer" readonly placeholder="Extract text from PDF to view here..."></textarea>
-                        </div>
-                    </div>
-                </div>
             </section>
         </main>
 

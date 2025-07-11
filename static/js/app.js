@@ -198,6 +198,9 @@ async function saveText() {
         showNotification('No text to save. Please extract text first.', 'warning');
         return;
     }
+
+    showLoading(true);
+    updateStatus('Saving text...');
     
     try {
         const response = await fetch('/save-text', {
@@ -213,12 +216,14 @@ async function saveText() {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `extracted_text_${Date.now()}.txt`;
+            a.download = 'extracted_text.txt';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
-            showNotification('Text saved successfully!', 'success');
+            
+            updateStatus('Text saved successfully');
+            showNotification('Text file downloaded!', 'success');
         } else {
             const data = await response.json();
             showNotification(data.error, 'error');
@@ -226,6 +231,241 @@ async function saveText() {
     } catch (error) {
         showNotification('Error saving text', 'error');
         console.error('Save error:', error);
+    } finally {
+        showLoading(false);
+    }
+}
+
+// AI Analysis functions
+async function summarizePDF() {
+    if (!extractedText.trim()) {
+        showNotification('No text extracted. Please extract text first.', 'warning');
+        return;
+    }
+
+    showLoading(true);
+    updateStatus('Generating summary...');
+    
+    try {
+        const response = await fetch('/summarize', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            displaySummary(data);
+            switchTab('summary');
+            updateStatus('Summary generated successfully');
+            showNotification('PDF summarized successfully!', 'success');
+        } else {
+            showNotification(data.error, 'error');
+        }
+    } catch (error) {
+        showNotification('Error generating summary', 'error');
+        console.error('Summary error:', error);
+    } finally {
+        showLoading(false);
+    }
+}
+
+function displaySummary(data) {
+    const summaryContent = document.getElementById('summaryContent');
+    const keyPointsContent = document.getElementById('keyPointsContent');
+    const statsContent = document.getElementById('statsContent');
+    
+    // Display summary
+    summaryContent.innerHTML = `<p>${data.summary}</p>`;
+    
+    // Display key points
+    if (data.key_points && data.key_points.length > 0) {
+        const keyPointsList = data.key_points.map(point => `<li>${point}</li>`).join('');
+        keyPointsContent.innerHTML = `<ul>${keyPointsList}</ul>`;
+    } else {
+        keyPointsContent.innerHTML = '<p class="placeholder">No key points identified</p>';
+    }
+    
+    // Display statistics
+    if (data.statistics) {
+        const stats = data.statistics;
+        statsContent.innerHTML = `
+            <div class="stat-item">
+                <div class="stat-value">${stats.word_count}</div>
+                <div class="stat-label">Words</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">${stats.sentence_count}</div>
+                <div class="stat-label">Sentences</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">${Math.round(stats.readability_score)}</div>
+                <div class="stat-label">Readability Score</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">${Math.round(stats.grade_level)}</div>
+                <div class="stat-label">Grade Level</div>
+            </div>
+        `;
+    } else {
+        statsContent.innerHTML = '<p class="placeholder">Statistics not available</p>';
+    }
+}
+
+async function generateQuestions() {
+    if (!extractedText.trim()) {
+        showNotification('No text extracted. Please extract text first.', 'warning');
+        return;
+    }
+
+    const mcQuestions = document.getElementById('mcQuestions').checked;
+    const theoryQuestions = document.getElementById('theoryQuestions').checked;
+    const questionCount = parseInt(document.getElementById('questionCount').value);
+
+    if (!mcQuestions && !theoryQuestions) {
+        showNotification('Please select at least one question type.', 'warning');
+        return;
+    }
+
+    showLoading(true);
+    updateStatus('Generating questions...');
+    
+    try {
+        const questionTypes = [];
+        if (mcQuestions) questionTypes.push('multiple_choice');
+        if (theoryQuestions) questionTypes.push('theory');
+        
+        const response = await fetch('/generate-questions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                types: questionTypes,
+                count: questionCount
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            displayQuestions(data.questions);
+            switchTab('questions');
+            updateStatus(`Generated ${data.total_questions} questions successfully`);
+            showNotification(`Generated ${data.total_questions} questions!`, 'success');
+        } else {
+            showNotification(data.error, 'error');
+        }
+    } catch (error) {
+        showNotification('Error generating questions', 'error');
+        console.error('Question generation error:', error);
+    } finally {
+        showLoading(false);
+    }
+}
+
+function displayQuestions(questions) {
+    const questionsContent = document.getElementById('questionsContent');
+    
+    if (!questions || questions.length === 0) {
+        questionsContent.innerHTML = '<p class="placeholder">No questions generated</p>';
+        return;
+    }
+    
+    const questionsHTML = questions.map((question, index) => {
+        let questionHTML = `
+            <div class="question-item">
+                <div class="question-header">
+                    <span class="question-type">${question.type.replace('_', ' ').toUpperCase()}</span>
+                </div>
+                <div class="question-text">${question.question}</div>
+        `;
+        
+        if (question.type === 'multiple_choice') {
+            questionHTML += '<div class="question-options">';
+            question.options.forEach((option, optionIndex) => {
+                const isCorrect = option === question.correct_answer;
+                questionHTML += `<div class="question-option ${isCorrect ? 'correct' : ''}">${optionIndex + 1}. ${option}</div>`;
+            });
+            questionHTML += '</div>';
+        } else {
+            questionHTML += `<div class="question-answer"><strong>Expected Answer:</strong> ${question.expected_answer}</div>`;
+        }
+        
+        questionHTML += `<div class="question-explanation"><strong>Explanation:</strong> ${question.explanation}</div>`;
+        questionHTML += '</div>';
+        
+        return questionHTML;
+    }).join('');
+    
+    questionsContent.innerHTML = questionsHTML;
+}
+
+async function exportQuestions() {
+    const questionsContent = document.getElementById('questionsContent');
+    
+    if (questionsContent.querySelector('.placeholder')) {
+        showNotification('No questions to export. Please generate questions first.', 'warning');
+        return;
+    }
+
+    showLoading(true);
+    updateStatus('Exporting questions...');
+    
+    try {
+        // Get export format from user
+        const format = prompt('Enter export format (json, txt, html):', 'txt');
+        
+        if (!format || !['json', 'txt', 'html'].includes(format)) {
+            showNotification('Invalid format. Please use: json, txt, or html', 'error');
+            return;
+        }
+        
+        const response = await fetch('/export-questions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ format: format })
+        });
+        
+        if (response.ok) {
+            if (format === 'json') {
+                const data = await response.json();
+                const blob = new Blob([JSON.stringify(data.questions, null, 2)], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = data.filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } else {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `questions.${format}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }
+            
+            updateStatus('Questions exported successfully');
+            showNotification(`Questions exported as ${format.toUpperCase()} file!`, 'success');
+        } else {
+            const data = await response.json();
+            showNotification(data.error, 'error');
+        }
+    } catch (error) {
+        showNotification('Error exporting questions', 'error');
+        console.error('Export error:', error);
+    } finally {
+        showLoading(false);
     }
 }
 
@@ -355,11 +595,17 @@ function switchTab(tabName) {
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
     
     if (tabName === 'viewer') {
-        document.querySelector('.tab-btn:first-child').classList.add('active');
+        document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
         document.getElementById('viewerTab').classList.add('active');
     } else if (tabName === 'text') {
-        document.querySelector('.tab-btn:last-child').classList.add('active');
+        document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
         document.getElementById('textTab').classList.add('active');
+    } else if (tabName === 'summary') {
+        document.querySelector('.tab-btn:nth-child(3)').classList.add('active');
+        document.getElementById('summaryTab').classList.add('active');
+    } else if (tabName === 'questions') {
+        document.querySelector('.tab-btn:nth-child(4)').classList.add('active');
+        document.getElementById('questionsTab').classList.add('active');
     }
 }
 
