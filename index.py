@@ -59,7 +59,7 @@ class PDFReader:
         style = ttk.Style()
         style.theme_use('clam')
         
-        # Configure colors
+       
         style.configure('Title.TLabel', font=('Arial', 16, 'bold'), foreground='#2c3e50')
         style.configure('Info.TLabel', font=('Arial', 10), foreground='#34495e')
         style.configure('Custom.TButton', font=('Arial', 10, 'bold'))
@@ -67,11 +67,11 @@ class PDFReader:
         
     def create_widgets(self):
         """Create and arrange all GUI widgets"""
-        # Main frame
+  
         main_frame = ttk.Frame(self.root)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
-        # Title
+
         title_label = ttk.Label(main_frame, text="PDF Reader with Audio", style='Title.TLabel')
         title_label.pack(pady=(0, 10))
         
