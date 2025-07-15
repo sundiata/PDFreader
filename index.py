@@ -75,19 +75,18 @@ class PDFReader:
         title_label = ttk.Label(main_frame, text="PDF Reader with Audio", style='Title.TLabel')
         title_label.pack(pady=(0, 10))
         
-        # Top control frame
+      
         top_frame = ttk.Frame(main_frame)
         top_frame.pack(fill=tk.X, pady=(0, 10))
         
-        # File operations
+       
         file_frame = ttk.LabelFrame(top_frame, text="File Operations", padding=10)
         file_frame.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 10))
         
         ttk.Button(file_frame, text="Open PDF", command=self.open_pdf, style='Custom.TButton').pack(side=tk.LEFT, padx=(0, 5))
         ttk.Button(file_frame, text="Extract Text", command=self.extract_text, style='Custom.TButton').pack(side=tk.LEFT, padx=(0, 5))
         ttk.Button(file_frame, text="Save Text", command=self.save_text, style='Custom.TButton').pack(side=tk.LEFT)
-        
-        # Audio controls frame
+      
         audio_frame = ttk.LabelFrame(top_frame, text="Audio Controls", padding=10)
         audio_frame.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 10))
         
