@@ -90,7 +90,7 @@ class PDFReader:
         audio_frame = ttk.LabelFrame(top_frame, text="Audio Controls", padding=10)
         audio_frame.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 10))
         
-        # Audio buttons
+     
         self.play_button = ttk.Button(audio_frame, text="🔊 Play", command=self.start_reading, style='Audio.TButton')
         self.play_button.pack(side=tk.LEFT, padx=(0, 5))
         
@@ -100,7 +100,7 @@ class PDFReader:
         self.pause_button = ttk.Button(audio_frame, text="⏸ Pause", command=self.pause_reading, style='Audio.TButton')
         self.pause_button.pack(side=tk.LEFT, padx=(0, 5))
         
-        # Voice settings
+    
         ttk.Label(audio_frame, text="Speed:", style='Info.TLabel').pack(side=tk.LEFT, padx=(10, 5))
         self.speed_var = tk.StringVar(value="150")
         speed_combo = ttk.Combobox(audio_frame, textvariable=self.speed_var, values=["50", "100", "150", "200", "250"], width=5)
@@ -112,12 +112,11 @@ class PDFReader:
         volume_combo = ttk.Combobox(audio_frame, textvariable=self.volume_var, values=["0.1", "0.3", "0.5", "0.7", "0.9", "1.0"], width=5)
         volume_combo.pack(side=tk.LEFT, padx=(0, 5))
         volume_combo.bind('<<ComboboxSelected>>', self.update_voice_settings)
-        
-        # Navigation frame
+   
         nav_frame = ttk.LabelFrame(top_frame, text="Navigation", padding=10)
         nav_frame.pack(side=tk.RIGHT, fill=tk.X)
         
-        # Page navigation
+   
         ttk.Button(nav_frame, text="◀", command=self.prev_page, width=3).pack(side=tk.LEFT, padx=(0, 5))
         self.page_label = ttk.Label(nav_frame, text="Page: 0 / 0", style='Info.TLabel')
         self.page_label.pack(side=tk.LEFT, padx=(0, 5))
