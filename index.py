@@ -425,3 +425,20 @@ def main():
 if __name__ == "__main__":
     import io  # Import here to avoid circular import
     main()
+
+
+
+# list = [1,2,3,4,5,6,7,8,9,10]
+
+# for i in list:
+#     print(i)
+
+# if i == 5:
+#     print("5 is found")
+# else:
+#     print("5 is not found")
+
+
+
+
+# 
